@@ -2,7 +2,7 @@
 
 import { PageHeader } from "@/components/page-header"
 import { StatusBadge } from "@/components/status-badge"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import { mockSubjects, mockStudents, mockTimetable } from "@/lib/mock-data"
 import { Users, Clock, MapPin, BookOpen } from "lucide-react"
 

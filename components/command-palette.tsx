@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import { navigationConfig } from "@/lib/navigation"
 import {
   CommandDialog,

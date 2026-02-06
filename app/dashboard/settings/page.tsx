@@ -1,7 +1,7 @@
 "use client"
 
 import { PageHeader } from "@/components/page-header"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import { getInitials } from "@/lib/utils"
 import { User, Mail, Phone, Building2, Shield, Bell, Palette } from "lucide-react"
 import { useTheme } from "next-themes"

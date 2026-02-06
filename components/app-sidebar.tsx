@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import { navigationConfig } from "@/lib/navigation"
 import { cn, getInitials } from "@/lib/utils"
 import {

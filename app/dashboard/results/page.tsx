@@ -2,7 +2,7 @@
 
 import { PageHeader } from "@/components/page-header"
 import { StatCard } from "@/components/stat-card"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import { mockStudents, mockMarksEntries, mockExams } from "@/lib/mock-data"
 import { Award, FileText, TrendingUp, BookOpen } from "lucide-react"
 

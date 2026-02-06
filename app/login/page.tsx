@@ -3,9 +3,8 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth, type Role } from "@/app/providers"
 import { Eye, EyeOff, ArrowRight } from "lucide-react"
-import type { Role } from "@/types"
 
 const quickLogins: { role: Role; email: string; label: string; description: string }[] = [
   { role: "admin", email: "admin@college.edu", label: "Admin", description: "Full system access" },

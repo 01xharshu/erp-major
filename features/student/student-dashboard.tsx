@@ -12,7 +12,7 @@ import {
   mockFeePayments,
 } from "@/lib/mock-data"
 import { formatCurrency } from "@/lib/utils"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import {
   ClipboardCheck,
   IndianRupee,

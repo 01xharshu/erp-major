@@ -5,7 +5,7 @@ import { DataTable } from "@/components/data-table"
 import { StatusBadge } from "@/components/status-badge"
 import { mockStudents } from "@/lib/mock-data"
 import { formatCurrency } from "@/lib/utils"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import type { Student } from "@/types"
 
 const columns = [

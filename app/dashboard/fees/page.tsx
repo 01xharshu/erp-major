@@ -1,6 +1,6 @@
 "use client"
 
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import { PageHeader } from "@/components/page-header"
 import { StatCard } from "@/components/stat-card"
 import { DataTable } from "@/components/data-table"

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import { PageHeader } from "@/components/page-header"
 import { StatusBadge } from "@/components/status-badge"
 import { mockStudents, mockSubjects, mockAttendanceRecords } from "@/lib/mock-data"

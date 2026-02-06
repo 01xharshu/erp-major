@@ -11,7 +11,7 @@ import {
   mockAnnouncements,
   mockAttendanceRecords,
 } from "@/lib/mock-data"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@/app/providers"
 import {
   Users,
   BookOpen,
