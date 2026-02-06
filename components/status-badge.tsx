@@ -25,6 +25,11 @@ const statusStyles: Record<string, string> = {
   resigned: "bg-destructive/10 text-destructive",
   closed: "bg-muted text-muted-foreground",
   draft: "bg-muted text-muted-foreground",
+  // Priority levels
+  high: "bg-destructive/10 text-destructive",
+  urgent: "bg-destructive/10 text-destructive",
+  normal: "bg-primary/10 text-primary",
+  low: "bg-muted text-muted-foreground",
 }
 
 interface StatusBadgeProps {
