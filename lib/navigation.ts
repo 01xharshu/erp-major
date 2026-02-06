@@ -1,0 +1,43 @@
+import type { Role, NavItem } from "@/types"
+
+export const navigationConfig: Record<Role, NavItem[]> = {
+  admin: [
+    { title: "Dashboard", href: "/dashboard", icon: "LayoutDashboard" },
+    { title: "Students", href: "/dashboard/students", icon: "GraduationCap" },
+    { title: "Teachers", href: "/dashboard/teachers", icon: "Users" },
+    { title: "Departments", href: "/dashboard/departments", icon: "Building2" },
+    { title: "Courses", href: "/dashboard/courses", icon: "BookOpen" },
+    { title: "Attendance", href: "/dashboard/attendance", icon: "ClipboardCheck" },
+    { title: "Examinations", href: "/dashboard/examinations", icon: "FileText" },
+    { title: "Fees & Finance", href: "/dashboard/fees", icon: "IndianRupee" },
+    { title: "Assignments", href: "/dashboard/assignments", icon: "FileEdit" },
+    { title: "Timetable", href: "/dashboard/timetable", icon: "Calendar" },
+    { title: "Library", href: "/dashboard/library", icon: "Library" },
+    { title: "Announcements", href: "/dashboard/announcements", icon: "Megaphone" },
+    { title: "Leave Requests", href: "/dashboard/leaves", icon: "CalendarOff" },
+    { title: "Reports", href: "/dashboard/reports", icon: "BarChart3" },
+  ],
+  teacher: [
+    { title: "Dashboard", href: "/dashboard", icon: "LayoutDashboard" },
+    { title: "My Classes", href: "/dashboard/classes", icon: "BookOpen" },
+    { title: "Attendance", href: "/dashboard/attendance", icon: "ClipboardCheck" },
+    { title: "Marks Entry", href: "/dashboard/marks", icon: "FileText" },
+    { title: "Assignments", href: "/dashboard/assignments", icon: "FileEdit" },
+    { title: "Timetable", href: "/dashboard/timetable", icon: "Calendar" },
+    { title: "Students", href: "/dashboard/students", icon: "GraduationCap" },
+    { title: "Leave Requests", href: "/dashboard/leaves", icon: "CalendarOff" },
+    { title: "Announcements", href: "/dashboard/announcements", icon: "Megaphone" },
+    { title: "Library", href: "/dashboard/library", icon: "Library" },
+  ],
+  student: [
+    { title: "Dashboard", href: "/dashboard", icon: "LayoutDashboard" },
+    { title: "Attendance", href: "/dashboard/attendance", icon: "ClipboardCheck" },
+    { title: "Results", href: "/dashboard/results", icon: "FileText" },
+    { title: "Fees", href: "/dashboard/fees", icon: "IndianRupee" },
+    { title: "Assignments", href: "/dashboard/assignments", icon: "FileEdit" },
+    { title: "Timetable", href: "/dashboard/timetable", icon: "Calendar" },
+    { title: "Library", href: "/dashboard/library", icon: "Library" },
+    { title: "Announcements", href: "/dashboard/announcements", icon: "Megaphone" },
+    { title: "Leave Requests", href: "/dashboard/leaves", icon: "CalendarOff" },
+  ],
+}
