@@ -94,19 +94,22 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const [pendingNav, setPendingNav] = useState(false)
 
   const { login, startDemo, isAuthenticated } = useAuth()
   const { theme, setTheme } = useTheme()
   const router = useRouter()
 
-  // Navigate AFTER auth state has propagated through React re-render
+  // If already authenticated (e.g. navigated back), go to dashboard
   useEffect(() => {
-    if (pendingNav && isAuthenticated) {
-      router.push("/dashboard")
-      setPendingNav(false)
+    if (isAuthenticated) {
+      router.replace("/dashboard")
     }
-  }, [pendingNav, isAuthenticated, router])
+  }, [isAuthenticated, router])
+
+  const navigateAfterAuth = () => {
+    // Use setTimeout(0) to let React flush state updates before navigating
+    setTimeout(() => router.replace("/dashboard"), 0)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -114,24 +117,24 @@ export default function LoginPage() {
     setLoading(true)
     const success = await login(email, password)
     if (success) {
-      setPendingNav(true)
+      navigateAfterAuth()
     } else {
       setError("Invalid credentials. Use one of the quick-access accounts below.")
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const handleQuickLogin = async (loginEmail: string) => {
     setLoading(true)
     const success = await login(loginEmail, "demo")
-    if (success) setPendingNav(true)
-    setLoading(false)
+    if (success) navigateAfterAuth()
+    else setLoading(false)
   }
 
   const handleDemo = (role: Role) => {
     setLoading(true)
     startDemo(role)
-    setPendingNav(true)
+    navigateAfterAuth()
   }
 
   return (

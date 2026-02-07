@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth, type Role } from "@/app/providers"
 import { AppSidebar } from "@/components/app-sidebar"
 import { CommandPalette } from "@/components/command-palette"
-import { Menu, X, Eye, ArrowRight, Shield, BookOpen, GraduationCap, LogOut } from "lucide-react"
+import { Menu, X, Eye, Shield, BookOpen, GraduationCap, LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -13,19 +13,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter()
   const [commandOpen, setCommandOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [ready, setReady] = useState(false)
-
-  // Give auth state one render cycle to propagate before checking
-  useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 100)
-    return () => clearTimeout(timer)
-  }, [])
+  const hasCheckedAuth = useRef(false)
 
   useEffect(() => {
-    if (ready && !isAuthenticated) {
-      router.push("/login")
+    // Skip the very first render to let auth state propagate
+    if (!hasCheckedAuth.current) {
+      hasCheckedAuth.current = true
+      return
     }
-  }, [ready, isAuthenticated, router])
+    if (!isAuthenticated) {
+      router.replace("/login")
+    }
+  }, [isAuthenticated, router])
 
   if (!user) {
     return (
