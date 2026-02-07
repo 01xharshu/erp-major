@@ -13,12 +13,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter()
   const [commandOpen, setCommandOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [ready, setReady] = useState(false)
+
+  // Give auth state one render cycle to propagate before checking
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (ready && !isAuthenticated) {
       router.push("/login")
     }
-  }, [isAuthenticated, router])
+  }, [ready, isAuthenticated, router])
 
   if (!user) {
     return (

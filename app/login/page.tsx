@@ -94,10 +94,19 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [pendingNav, setPendingNav] = useState(false)
 
-  const { login, startDemo } = useAuth()
+  const { login, startDemo, isAuthenticated } = useAuth()
   const { theme, setTheme } = useTheme()
   const router = useRouter()
+
+  // Navigate AFTER auth state has propagated through React re-render
+  useEffect(() => {
+    if (pendingNav && isAuthenticated) {
+      router.push("/dashboard")
+      setPendingNav(false)
+    }
+  }, [pendingNav, isAuthenticated, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -105,7 +114,7 @@ export default function LoginPage() {
     setLoading(true)
     const success = await login(email, password)
     if (success) {
-      router.push("/dashboard")
+      setPendingNav(true)
     } else {
       setError("Invalid credentials. Use one of the quick-access accounts below.")
     }
@@ -115,13 +124,14 @@ export default function LoginPage() {
   const handleQuickLogin = async (loginEmail: string) => {
     setLoading(true)
     const success = await login(loginEmail, "demo")
-    if (success) router.push("/dashboard")
+    if (success) setPendingNav(true)
     setLoading(false)
   }
 
   const handleDemo = (role: Role) => {
+    setLoading(true)
     startDemo(role)
-    router.push("/dashboard")
+    setPendingNav(true)
   }
 
   return (
