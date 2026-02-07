@@ -78,6 +78,24 @@ export function Providers({ children }: { children: ReactNode }) {
 
   const login = useCallback(
     async (email: string, _password: string): Promise<boolean> => {
+      try {
+        // Try real database login first
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        })
+        const data = await res.json()
+        if (data.success && data.user) {
+          setUser(data.user as User)
+          setIsDemo(false)
+          return true
+        }
+      } catch {
+        // If API fails, fall back to mock users
+        console.warn("DB login failed, using mock fallback")
+      }
+      // Fallback to mock users (offline / no DB)
       const foundUser = mockUsers.find((u) => u.email === email)
       if (foundUser) {
         setUser(foundUser)
