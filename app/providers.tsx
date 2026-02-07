@@ -56,6 +56,9 @@ interface AuthContextType {
   logout: () => void
   switchRole: (role: Role) => void
   isAuthenticated: boolean
+  isDemo: boolean
+  startDemo: (role: Role) => void
+  exitDemo: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -71,12 +74,14 @@ export function useAuth() {
 // ── Combined Providers ───────────────────────────────────────────────
 export function Providers({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [isDemo, setIsDemo] = useState(false)
 
   const login = useCallback(
     async (email: string, _password: string): Promise<boolean> => {
       const foundUser = mockUsers.find((u) => u.email === email)
       if (foundUser) {
         setUser(foundUser)
+        setIsDemo(false)
         return true
       }
       return false
@@ -86,6 +91,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     setUser(null)
+    setIsDemo(false)
   }, [])
 
   const switchRole = useCallback((role: Role) => {
@@ -93,6 +99,19 @@ export function Providers({ children }: { children: ReactNode }) {
     if (roleUser) {
       setUser(roleUser)
     }
+  }, [])
+
+  const startDemo = useCallback((role: Role) => {
+    const roleUser = mockUsers.find((u) => u.role === role)
+    if (roleUser) {
+      setUser(roleUser)
+      setIsDemo(true)
+    }
+  }, [])
+
+  const exitDemo = useCallback(() => {
+    setUser(null)
+    setIsDemo(false)
   }, [])
 
   return (
@@ -103,7 +122,16 @@ export function Providers({ children }: { children: ReactNode }) {
       disableTransitionOnChange
     >
       <AuthContext.Provider
-        value={{ user, login, logout, switchRole, isAuthenticated: !!user }}
+        value={{
+          user,
+          login,
+          logout,
+          switchRole,
+          isAuthenticated: !!user,
+          isDemo,
+          startDemo,
+          exitDemo,
+        }}
       >
         {children}
       </AuthContext.Provider>

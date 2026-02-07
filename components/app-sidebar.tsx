@@ -48,7 +48,7 @@ const iconMap: Record<string, LucideIcon> = {
 }
 
 export function AppSidebar({ onCommandOpen }: { onCommandOpen?: () => void }) {
-  const { user, logout } = useAuth()
+  const { user, logout, isDemo } = useAuth()
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
   const [collapsed, setCollapsed] = useState(false)
@@ -151,7 +151,12 @@ export function AppSidebar({ onCommandOpen }: { onCommandOpen?: () => void }) {
               </div>
               <div className="flex-1 overflow-hidden">
                 <p className="truncate text-xs font-medium text-foreground">{user.name}</p>
-                <p className="truncate text-[10px] text-muted-foreground capitalize">{user.role}</p>
+                <p className="flex items-center gap-1 truncate text-[10px] text-muted-foreground capitalize">
+                  {user.role}
+                  {isDemo && (
+                    <span className="rounded bg-amber-500/20 px-1 py-px text-[9px] font-semibold uppercase text-amber-600 dark:text-amber-400">demo</span>
+                  )}
+                </p>
               </div>
             </div>
           )}

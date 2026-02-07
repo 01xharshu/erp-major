@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useAuth, type Role } from "@/app/providers"
 import {
   GraduationCap,
   ClipboardCheck,
@@ -22,7 +24,19 @@ import {
   ChevronRight,
   Library,
   Megaphone,
+  Play,
+  Monitor,
 } from "lucide-react"
+
+/* ------------------------------------------------------------------ */
+/*  Demo role picker data                                              */
+/* ------------------------------------------------------------------ */
+
+const demoRoles: { role: Role; icon: React.ElementType; label: string; description: string; color: string; bg: string }[] = [
+  { role: "admin", icon: Shield, label: "Administrator", description: "Full system access with analytics, user management, and fee configuration.", color: "text-primary", bg: "bg-primary/10" },
+  { role: "teacher", icon: BookOpen, label: "Teacher", description: "Class management, attendance marking, marks entry, and assignments.", color: "text-emerald-500", bg: "bg-emerald-500/10" },
+  { role: "student", icon: GraduationCap, label: "Student", description: "View grades, attendance, fees, timetable, and submit assignments.", color: "text-amber-500", bg: "bg-amber-500/10" },
+]
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -238,13 +252,22 @@ function AnimatedStat({ value, label, icon: Icon }: { value: string; label: stri
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [demoPickerOpen, setDemoPickerOpen] = useState(false)
   const scrollRef = useScrollReveal()
+  const { startDemo } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
+  const handleStartDemo = (role: Role) => {
+    startDemo(role)
+    setDemoPickerOpen(false)
+    router.push("/dashboard")
+  }
 
   return (
     <div ref={scrollRef} className="min-h-screen bg-background">
@@ -278,7 +301,14 @@ export default function LandingPage() {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-2 md:flex">
+            <button
+              onClick={() => setDemoPickerOpen(true)}
+              className="group flex h-9 items-center gap-1.5 rounded-lg border border-border bg-card/50 px-3.5 text-sm font-medium text-foreground backdrop-blur-sm transition-all hover:border-primary/40 hover:bg-accent"
+            >
+              <Play className="h-3.5 w-3.5 text-primary" />
+              Try Demo
+            </button>
             <Link
               href="/login"
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -321,6 +351,13 @@ export default function LandingPage() {
                 </a>
               ))}
               <div className="my-2 h-px bg-border/50" />
+              <button
+                onClick={() => { setMobileOpen(false); setDemoPickerOpen(true) }}
+                className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+              >
+                <Play className="h-3.5 w-3.5 text-primary" />
+                Try Demo
+              </button>
               <Link
                 href="/login"
                 className="rounded-md px-3 py-2.5 text-sm text-muted-foreground"
@@ -394,13 +431,13 @@ export default function LandingPage() {
                 Start using CampusFlow
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
-              <a
-                href="#features"
-                className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/50 px-6 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-accent sm:w-auto"
+              <button
+                onClick={() => setDemoPickerOpen(true)}
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-card/50 px-6 text-sm font-medium text-foreground backdrop-blur-sm transition-all hover:border-primary/40 hover:bg-accent sm:w-auto"
               >
-                Explore features
-                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
-              </a>
+                <Play className="h-4 w-4 text-primary" />
+                Try Demo
+              </button>
             </div>
           </div>
 
@@ -712,6 +749,82 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* ========== DEMO ROLE PICKER MODAL ========== */}
+      {demoPickerOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setDemoPickerOpen(false)}
+          />
+
+          {/* Modal */}
+          <div className="relative w-full max-w-lg animate-in fade-in zoom-in-95 duration-200 rounded-2xl border border-border bg-card shadow-2xl">
+            {/* Close button */}
+            <button
+              onClick={() => setDemoPickerOpen(false)}
+              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              aria-label="Close"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="p-6 pb-2">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                  <Monitor className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Try Demo Mode
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Explore every feature with view-only sample data
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 pt-4">
+              <p className="mb-4 text-xs font-medium text-muted-foreground">
+                Select a role to explore
+              </p>
+              <div className="flex flex-col gap-3">
+                {demoRoles.map((dr) => (
+                  <button
+                    key={dr.role}
+                    onClick={() => handleStartDemo(dr.role)}
+                    className="group flex items-start gap-4 rounded-xl border border-border bg-background p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+                  >
+                    <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${dr.bg} ${dr.color} transition-transform duration-200 group-hover:scale-110`}>
+                      <dr.icon className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-foreground">{dr.label}</span>
+                        <ArrowRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
+                      </div>
+                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                        {dr.description}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-5 flex items-start gap-2 rounded-lg bg-muted/50 p-3">
+                <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                  <Check className="h-2.5 w-2.5 text-primary" />
+                </div>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  Demo mode uses sample data only. No real data is affected and all actions are simulated. You can switch roles or exit at any time.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
