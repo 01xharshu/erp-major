@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import {
   GraduationCap,
@@ -12,6 +13,8 @@ import {
   BookOpen,
   Shield,
   Smartphone,
+  Menu,
+  X,
 } from "lucide-react"
 
 const features = [
@@ -66,44 +69,116 @@ const roles = [
 ]
 
 export default function LandingPage() {
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-              <span className="text-sm font-bold text-primary-foreground">CF</span>
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "border-b border-border/60 bg-background/70 shadow-sm backdrop-blur-xl supports-[backdrop-filter]:bg-background/60"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 lg:px-6">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary shadow-md shadow-primary/25">
+              <GraduationCap className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="text-base font-semibold text-foreground">CampusFlow</span>
+            <span className="text-lg font-bold tracking-tight text-foreground">CampusFlow</span>
           </Link>
-          <nav className="hidden items-center gap-6 md:flex">
-            <a href="#features" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-              Features
-            </a>
-            <a href="#roles" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-              Roles
-            </a>
+
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-1 md:flex">
+            {[
+              { href: "#features", label: "Features" },
+              { href: "#roles", label: "Roles" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="rounded-md px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                {item.label}
+              </a>
+            ))}
           </nav>
-          <div className="flex items-center gap-3">
+
+          {/* Desktop actions */}
+          <div className="hidden items-center gap-2 md:flex">
             <Link
               href="/login"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="rounded-md px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
               Sign in
             </Link>
             <Link
               href="/login"
-              className="flex h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              className="flex h-9 items-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground shadow-md shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30"
             >
               Get Started
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background/80 text-foreground transition-colors hover:bg-accent md:hidden"
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
         </div>
+
+        {/* Mobile dropdown */}
+        {mobileOpen && (
+          <div className="border-t border-border/60 bg-background/95 backdrop-blur-xl md:hidden">
+            <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
+              <a
+                href="#features"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                Features
+              </a>
+              <a
+                href="#roles"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                Roles
+              </a>
+              <div className="my-1 h-px bg-border/60" />
+              <Link
+                href="/login"
+                className="rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/login"
+                className="flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground shadow-md shadow-primary/25 transition-all hover:bg-primary/90"
+              >
+                Get Started
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 pb-20 pt-24 text-center">
+      <section className="mx-auto max-w-6xl px-4 pb-20 pt-32 text-center">
         <div className="mx-auto max-w-3xl">
           <div className="mb-4 inline-flex items-center rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
             Enterprise-grade College ERP
