@@ -240,3 +240,45 @@
 .login-animate-3 { animation: login-slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
 .login-animate-4 { animation: login-slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both; }
 .login-animate-5 { animation: login-slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both; }
+
+/* Node orbit / circular animation */
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(var(--orbit-r)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--orbit-r)) rotate(-360deg); }
+}
+@keyframes orbit-reverse {
+  from { transform: rotate(360deg) translateX(var(--orbit-r)) rotate(-360deg); }
+  to   { transform: rotate(0deg) translateX(var(--orbit-r)) rotate(0deg); }
+}
+@keyframes node-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.3); }
+  50%      { box-shadow: 0 0 0 8px hsl(var(--primary) / 0); }
+}
+@keyframes dash-flow {
+  to { stroke-dashoffset: -20; }
+}
+@keyframes confetti-pop {
+  0%   { transform: scale(0) rotate(0deg); opacity: 1; }
+  50%  { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+/* Mobile sidebar slide */
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes slide-out-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+.sidebar-enter { animation: slide-in-left 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.sidebar-exit  { animation: slide-out-left 0.2s ease-in both; }
+
+/* Easter egg shake */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-6deg) scale(1.1); }
+  75%      { transform: rotate(6deg) scale(1.1); }
+}
+.easter-wiggle { animation: wiggle 0.4s ease-in-out; }
