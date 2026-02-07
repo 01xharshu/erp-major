@@ -95,7 +95,7 @@ export default function LoginPage() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const { login } = useAuth()
+  const { login, startDemo } = useAuth()
   const { theme, setTheme } = useTheme()
   const router = useRouter()
 
@@ -117,6 +117,11 @@ export default function LoginPage() {
     const success = await login(loginEmail, "demo")
     if (success) router.push("/dashboard")
     setLoading(false)
+  }
+
+  const handleDemo = (role: Role) => {
+    startDemo(role)
+    router.push("/dashboard")
   }
 
   return (
@@ -345,11 +350,54 @@ export default function LoginPage() {
               ))}
             </div>
 
+            {/* Demo mode section */}
+            <div className="mt-7 login-animate-5">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-border" />
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-background px-3 text-[11px] font-medium uppercase tracking-widest text-muted-foreground/50">
+                    or explore as guest
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-4">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
+                    <Eye className="h-3.5 w-3.5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">Demo Mode</p>
+                    <p className="text-[11px] text-muted-foreground">View-only access with sample data</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {([
+                    { role: "admin" as Role, icon: Shield, label: "Admin", color: "text-primary" },
+                    { role: "teacher" as Role, icon: BookOpen, label: "Teacher", color: "text-emerald-500" },
+                    { role: "student" as Role, icon: GraduationCap, label: "Student", color: "text-amber-500" },
+                  ]).map((d) => (
+                    <button
+                      key={d.role}
+                      onClick={() => handleDemo(d.role)}
+                      className="group flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card py-2 text-xs font-medium text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:text-foreground hover:shadow-md"
+                    >
+                      <d.icon className={`h-3.5 w-3.5 ${d.color}`} />
+                      {d.label}
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-3 text-center text-[10px] text-muted-foreground/50">
+                  No login required. No data is saved or modified.
+                </p>
+              </div>
+            </div>
+
             {/* Footer note */}
-            <p className="mt-6 text-center text-[11px] leading-relaxed text-muted-foreground/50 login-animate-5">
-              Use any quick-access account above to explore the platform.
-              <br />
-              All data shown is for demonstration purposes.
+            <p className="mt-5 text-center text-[11px] leading-relaxed text-muted-foreground/50">
+              All data shown is for demonstration purposes only.
             </p>
           </div>
         </div>
