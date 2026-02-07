@@ -91,3 +91,119 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Scroll-triggered entrance animations */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animate-on-scroll.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-on-scroll-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animate-on-scroll-left.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-on-scroll-right {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animate-on-scroll-right.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-on-scroll-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animate-on-scroll-scale.in-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hero-specific animations */
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.06;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes grid-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.4;
+  }
+}
+
+.hero-animate-1 {
+  animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.hero-animate-2 {
+  animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+.hero-animate-3 {
+  animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+.hero-animate-4 {
+  animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+}
+.hero-animate-5 {
+  animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+}
+
+.animate-glow-pulse {
+  animation: hero-glow-pulse 6s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-grid-fade {
+  animation: grid-fade 1.5s ease-out 0.3s both;
+}
