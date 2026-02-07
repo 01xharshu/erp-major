@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth, type Role } from "@/app/providers"
 import { AppSidebar } from "@/components/app-sidebar"
@@ -13,20 +13,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter()
   const [commandOpen, setCommandOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const hasCheckedAuth = useRef(false)
+  const [authChecked, setAuthChecked] = useState(false)
 
+  // Wait one tick after mount, then start checking auth
   useEffect(() => {
-    // Skip the very first render to let auth state propagate
-    if (!hasCheckedAuth.current) {
-      hasCheckedAuth.current = true
-      return
-    }
-    if (!isAuthenticated) {
+    // Small delay to ensure context state has propagated after navigation
+    const id = requestAnimationFrame(() => {
+      setAuthChecked(true)
+    })
+    return () => cancelAnimationFrame(id)
+  }, [])
+
+  // Only redirect AFTER we've confirmed auth state has settled
+  useEffect(() => {
+    if (authChecked && !isAuthenticated) {
       router.replace("/login")
     }
-  }, [isAuthenticated, router])
+  }, [authChecked, isAuthenticated, router])
 
-  if (!user) {
+  // Show loading while waiting for auth to settle
+  if (!authChecked || !user) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
