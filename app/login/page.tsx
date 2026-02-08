@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useTheme } from "next-themes"
+import { toast } from "sonner"
 import { useAuth, type Role } from "@/app/providers"
 import {
   Eye,
@@ -92,7 +93,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
 
@@ -113,25 +113,38 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError("")
+    
+    if (!email) {
+      toast.error("Please enter your email")
+      return
+    }
+    
     setLoading(true)
     const success = await login(email, password)
     if (!success) {
-      setError("Invalid credentials. Use one of the quick-access accounts below.")
+      toast.error("Invalid email. Try: admin@college.edu")
       setLoading(false)
+    } else {
+      toast.success("Login successful!")
+      // If success, isAuthenticated becomes true -> useEffect handles redirect
     }
-    // If success, isAuthenticated becomes true -> useEffect handles redirect
   }
 
   const handleQuickLogin = async (loginEmail: string) => {
     setLoading(true)
     const success = await login(loginEmail, "demo")
-    if (!success) setLoading(false)
-    // If success, isAuthenticated becomes true -> useEffect handles redirect
+    if (!success) {
+      toast.error("Login failed")
+      setLoading(false)
+    } else {
+      toast.success(`Logged in as ${loginEmail.split("@")[0]}`)
+      // If success, isAuthenticated becomes true -> useEffect handles redirect
+    }
   }
 
   const handleDemo = (role: Role) => {
     setLoading(true)
+    toast.success(`Entering ${role} demo mode`)
     startDemo(role)
     // isAuthenticated becomes true -> useEffect handles redirect
   }
