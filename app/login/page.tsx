@@ -252,12 +252,6 @@ export default function LoginPage() {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4 login-animate-3">
-              {error && (
-                <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2.5 text-xs text-destructive">
-                  {error}
-                </div>
-              )}
-
               <div>
                 <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-foreground">
                   Email
