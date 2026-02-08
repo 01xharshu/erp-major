@@ -1,13 +1,12 @@
-import { query } from "@/lib/db"
-import { NextResponse } from "next/server"
+import { getDatabase } from "@/lib/mongodb"
 
 interface DbUser {
-  id: string
+  _id?: string
   name: string
   email: string
   role: string
-  avatar: string
-  department: string
+  avatar?: string
+  department?: string
 }
 
 export async function POST(request: Request) {
@@ -15,31 +14,27 @@ export async function POST(request: Request) {
     const { email } = await request.json()
 
     if (!email) {
-      return NextResponse.json(
+      return Response.json(
         { success: false, message: "Email is required" },
         { status: 400 }
       )
     }
 
-    // Look up user by email
-    const users = await query<DbUser>(
-      "SELECT id, name, email, role, avatar, department FROM users WHERE email = $1 LIMIT 1",
-      [email]
-    )
+    // Look up user by email in MongoDB
+    const db = await getDatabase()
+    const user = (await db.collection("users").findOne({ email })) as DbUser | null
 
-    if (users.length === 0) {
-      return NextResponse.json(
+    if (!user) {
+      return Response.json(
         { success: false, message: "User not found" },
         { status: 404 }
       )
     }
 
-    const user = users[0]
-
-    return NextResponse.json({
+    return Response.json({
       success: true,
       user: {
-        id: user.id,
+        id: user._id?.toString() || "",
         name: user.name,
         email: user.email,
         role: user.role,
@@ -48,8 +43,8 @@ export async function POST(request: Request) {
       },
     })
   } catch (error) {
-    console.error("Login error:", error)
-    return NextResponse.json(
+    console.error("[v0] Login error:", error)
+    return Response.json(
       {
         success: false,
         message: "Internal server error",
@@ -59,3 +54,4 @@ export async function POST(request: Request) {
     )
   }
 }
+
