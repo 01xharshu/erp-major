@@ -94,10 +94,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   const { login, startDemo, isAuthenticated } = useAuth()
   const { theme, setTheme } = useTheme()
   const router = useRouter()
+
+  // Mark component as mounted to avoid hydration mismatches
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Redirect if already authenticated - single source of navigation
   // Run on first render without waiting for `mounted`
