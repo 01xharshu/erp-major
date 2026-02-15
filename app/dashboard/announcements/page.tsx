@@ -2,16 +2,19 @@
 
 import { PageHeader } from "@/components/page-header"
 import { StatusBadge } from "@/components/status-badge"
-import { mockAnnouncements } from "@/lib/mock-data"
+import { useDataFetcher } from "@/hooks/use-data-fetcher"
 import { formatDate } from "@/lib/utils"
 import { Megaphone } from "lucide-react"
+import type { Announcement } from "@/types"
 
 export default function AnnouncementsPage() {
+  const { data: announcements, loading } = useDataFetcher<Announcement>({ type: "announcements" })
+
   return (
     <div className="space-y-6">
       <PageHeader title="Announcements" description="View and manage institutional notices and updates." />
       <div className="space-y-4">
-        {mockAnnouncements.map((announcement) => (
+        {announcements.map((announcement) => (
           <div key={announcement.id} className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/20">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-3">
@@ -37,6 +40,8 @@ export default function AnnouncementsPage() {
           </div>
         ))}
       </div>
+      {loading && <p className="text-center text-muted-foreground">Loading announcements...</p>}
+      {!loading && announcements.length === 0 && <p className="text-center text-muted-foreground">No announcements found.</p>}
     </div>
   )
 }

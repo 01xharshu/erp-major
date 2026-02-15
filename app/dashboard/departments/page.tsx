@@ -1,15 +1,18 @@
 "use client"
 
 import { PageHeader } from "@/components/page-header"
-import { mockDepartments } from "@/lib/mock-data"
+import { useDataFetcher } from "@/hooks/use-data-fetcher"
 import { Building2, Users, GraduationCap } from "lucide-react"
+import type { Department } from "@/types"
 
 export default function DepartmentsPage() {
+  const { data: departments, loading } = useDataFetcher<Department>({ type: "departments" })
+
   return (
     <div className="space-y-6">
       <PageHeader title="Departments" description="Manage academic departments and their faculty." />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {mockDepartments.map((dept) => (
+        {departments.map((dept) => (
           <div
             key={dept.id}
             className="rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/30"
@@ -38,6 +41,8 @@ export default function DepartmentsPage() {
           </div>
         ))}
       </div>
+      {loading && <p className="text-center text-muted-foreground">Loading departments...</p>}
+      {!loading && departments.length === 0 && <p className="text-center text-muted-foreground">No departments found.</p>}
     </div>
   )
 }
