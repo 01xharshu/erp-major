@@ -15,13 +15,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [mobileOpen, setMobileOpen] = useState(false)
   const [authChecked, setAuthChecked] = useState(false)
 
-  // Wait one tick after mount, then start checking auth
+  // Wait for context to fully propagate after navigation
   useEffect(() => {
-    // Small delay to ensure context state has propagated after navigation
-    const id = requestAnimationFrame(() => {
+    // Use setTimeout instead of requestAnimationFrame for more reliable timing
+    const timer = setTimeout(() => {
       setAuthChecked(true)
-    })
-    return () => cancelAnimationFrame(id)
+    }, 50)
+    return () => clearTimeout(timer)
   }, [])
 
   // Only redirect AFTER we've confirmed auth state has settled

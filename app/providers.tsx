@@ -26,7 +26,7 @@ const mockUsers: User[] = [
   {
     id: "admin-1",
     name: "Dr. Rajesh Kumar",
-    email: "admin@campusflow.edu",
+    email: "admin@college.edu",
     role: "admin",
     avatar: "",
     department: "Administration",
@@ -34,7 +34,7 @@ const mockUsers: User[] = [
   {
     id: "teacher-1",
     name: "Prof. Ananya Sharma",
-    email: "teacher@campusflow.edu",
+    email: "teacher@college.edu",
     role: "teacher",
     avatar: "",
     department: "Computer Science",
@@ -42,7 +42,7 @@ const mockUsers: User[] = [
   {
     id: "student-1",
     name: "Harsh Upadhyay",
-    email: "student@campusflow.edu",
+    email: "student@college.edu",
     role: "student",
     avatar: "",
     department: "Computer Science",
