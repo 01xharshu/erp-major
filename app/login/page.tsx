@@ -94,23 +94,18 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [mounted, setMounted] = useState(false)
 
   const { login, startDemo, isAuthenticated } = useAuth()
   const { theme, setTheme } = useTheme()
   const router = useRouter()
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   // Redirect if already authenticated - single source of navigation
+  // Run on first render without waiting for `mounted`
   useEffect(() => {
-    if (mounted && isAuthenticated) {
-      console.log("[v0] Login: isAuthenticated=true, redirecting to /dashboard")
+    if (isAuthenticated) {
       router.replace("/dashboard")
     }
-  }, [mounted, isAuthenticated, router])
+  }, [isAuthenticated, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -144,7 +139,6 @@ export default function LoginPage() {
   }
 
   const handleDemo = (role: Role) => {
-    console.log("[v0] Demo: Starting demo mode for role:", role)
     setLoading(true)
     toast.success(`Entering ${role} demo mode`)
     startDemo(role)
