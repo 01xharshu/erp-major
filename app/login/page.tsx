@@ -317,9 +317,9 @@ export default function LoginPage() {
               </p>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { email: "admin@campusflow.edu", label: "Admin", icon: Shield, color: "text-primary", bg: "bg-primary/10" },
-                  { email: "teacher@campusflow.edu", label: "Teacher", icon: BookOpen, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-                  { email: "student@campusflow.edu", label: "Student", icon: GraduationCap, color: "text-amber-500", bg: "bg-amber-500/10" },
+                  { email: "admin@college.edu", label: "Admin", icon: Shield, color: "text-primary", bg: "bg-primary/10" },
+                  { email: "teacher@college.edu", label: "Teacher", icon: BookOpen, color: "text-emerald-500", bg: "bg-emerald-500/10" },
+                  { email: "student@college.edu", label: "Student", icon: GraduationCap, color: "text-amber-500", bg: "bg-amber-500/10" },
                 ].map((item) => (
                   <button
                     key={item.email}
