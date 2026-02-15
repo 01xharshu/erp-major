@@ -122,6 +122,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const startDemo = useCallback((role: Role) => {
     const roleUser = mockUsers.find((u) => u.role === role)
     if (roleUser) {
+      console.log("[v0] Providers: startDemo setting user to", roleUser.email, "and isDemo=true")
       setUser(roleUser)
       setIsDemo(true)
     }

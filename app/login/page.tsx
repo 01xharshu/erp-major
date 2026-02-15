@@ -107,6 +107,7 @@ export default function LoginPage() {
   // Redirect if already authenticated - single source of navigation
   useEffect(() => {
     if (mounted && isAuthenticated) {
+      console.log("[v0] Login: isAuthenticated=true, redirecting to /dashboard")
       router.replace("/dashboard")
     }
   }, [mounted, isAuthenticated, router])
@@ -143,6 +144,7 @@ export default function LoginPage() {
   }
 
   const handleDemo = (role: Role) => {
+    console.log("[v0] Demo: Starting demo mode for role:", role)
     setLoading(true)
     toast.success(`Entering ${role} demo mode`)
     startDemo(role)

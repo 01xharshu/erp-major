@@ -13,26 +13,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter()
   const [commandOpen, setCommandOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [authChecked, setAuthChecked] = useState(false)
 
-  // Wait for context to fully propagate after navigation
+  // Protect dashboard - redirect if not authenticated
   useEffect(() => {
-    // Use setTimeout instead of requestAnimationFrame for more reliable timing
-    const timer = setTimeout(() => {
-      setAuthChecked(true)
-    }, 50)
-    return () => clearTimeout(timer)
-  }, [])
-
-  // Only redirect AFTER we've confirmed auth state has settled
-  useEffect(() => {
-    if (authChecked && !isAuthenticated) {
+    if (!isAuthenticated) {
       router.replace("/login")
     }
-  }, [authChecked, isAuthenticated, router])
+  }, [isAuthenticated, router])
 
-  // Show loading while waiting for auth to settle
-  if (!authChecked || !user) {
+  // Show loading while waiting for user data
+  if (!user) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
